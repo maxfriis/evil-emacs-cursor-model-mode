@@ -13,10 +13,10 @@ Supposedly this is convertible to GPL 3.
 
 *** Thanks
 
-Toby Cubitt coded the cursor model.\\
+Toby Cubitt coded the motions in the cursor model.\\
 [[https://www.dr-qubit.org/Evil_cursor_model.html]]
 
-*** Install
+** Install
 
 Download evil-emacs-cursor-model-mode.el, open and install it with (package-install-from-buffer).
 Add the following code to your init.el:
@@ -28,8 +28,8 @@ Add the following code to your init.el:
 ** Cursor models
 
 Vim works with two cursor models.
-A cursor /on/ characters model in normal-state and /between/ characters in insert-state.
-The evil-emacs-cursor-model-mode unify these to a cursor between model in both states.
+A cursor /on top of/ characters model in normal-state and /between/ characters in insert-state.
+The evil-emacs-cursor-model-mode unify these to a cursor between model in all states.
 
 Furthermore it becomes natural to change some keybindings in this framework.
 That is my sacrilege to "the church of Vim".
@@ -39,17 +39,18 @@ Evil-mode's modal interface is preserved.
 
 Even though or maybe because I come from the Emacs world, I don't like layers.
 =<shift>= just like =<ctrl>= is a layer and I try to minimize the use of them in keybindings.
-To do this the mode will change three keybindings in Vim's normal-state keys.
+To do this the mode will change three keybindings in evil-mode's normal-state keys.
 
 *** The =a= binding
 
 First and foremost Vim's =a= in normal-state makes little sense.
-With this mode (evil-append) is just move forward (=l=) and enter insert-state (=i=).
-That is how you think if you adopt the mode's cursor model.
+Evil-mode's (evil-append) is just =l= (evil-forward-char) and =i= (evil-insert).
+That is how you should think if you adopt the mode's cursor model.
 
-Therefore I bind evil-mode's (evil-append-line) to =a=.
+Therefore I bind =a= to (evil-append-line).
 
-Binding (evil-append-line) makes sense in a cursor between model, whereas (evil-append) does not.
+Entering insert state at the end of line (evil-append-line) makes sense in this mode, whereas (evil-append) does not.
+You are free to rebind =A= in evil-emacs-cursor-model-mode-map.
 
 *** The =p= and =o= bindings
 
@@ -59,20 +60,21 @@ Move forward and paste is strange to prioritize with a one letter lower case bin
 
 Therefore I swap evil-mode's =p= and =P=.
 
-When you use the mode, you might find yourself only using one paste command.
+When you use the mode, you might find yourself only using the (evil-paste-before) command.
 Vim's need for two paste commands is compensation for the normal-state cursor model.
-Other editors usually only have one paste command and it's also natural to mainly have one in this mode.
-The new =P= is still bound and can be useful, but you can contextually replace it with =jp= or =lp=.
+Other editors only have one paste command and it's also natural to mainly have one in this mode.
+The new =P= (evil-paste-after) is still bound and can be useful, but you can contextually replace it with =jp= or =lp=.
 
 Last I swap Vim's =o= and =O= so their case are consistent with =p= and =P= when you paste lines.
 
 *** Summary
 
-This is all normal-state bindings:
+These are all normal-state keybindings:
 
 | This mode's binding | Vim's binding | Alternative       | Lisp function       |
 |---------------------+---------------+-------------------+---------------------|
 | =a=                 | =A=           | =$i=              | (evil-append-line)  |
+| =A=                 | =a=           | =li=              | (evil-append)       |
 | =o=                 | =O=           |                   | (evil-open-above)   |
 | =O=                 | =o=           | =jo= and =a<RET>= | (evil-open-below)   |
 | =p=                 | =P=           |                   | (evil-paste-before) |
@@ -120,10 +122,6 @@ Ultimately the modal framework is about editing text (working with the current l
 The main drawback is that it will be harder to work efficiently with an unconfigured Vi, Vim or evil-mode editor.
 The former mentioned muscle memory will work against you.
 
-This is often mentioned as an advantage of Vim over Emacs.
-Everyone personalize Emacs' default keybindings.
-You are more likely to have Vim's default keybindings available, if you sit down with someone else's Vim box.
-
 *** Combined command and motion
 
 The mode does have things that become less natural or harder.
@@ -135,7 +133,7 @@ That is a real cost, since a combined command and motion can sometimes be utiliz
 
 A more useful application of the command/motion behavior is Vim's =xp= which /swap/ two characters and move the cursor forward.
 The lisp function (transpose-chars) does roughly the same thing without involving the kill ring.
-I bind it to =gs= in my init.el, but this is not a part of the mode.
+I bind it to =gs= in my init.el, but this is /not/ a part of the mode.
 #+begin_src emacs-lisp
   (bind-keys
    :map evil-normal-state-map
@@ -143,27 +141,25 @@ I bind it to =gs= in my init.el, but this is not a part of the mode.
 #+end_src
 Vim's default =gs= is (sit-for 1) but evil-mode doesn't implement it.
 
-Note that Vim's behavior is often available so e.g. =~= will work on the (char-after) and move forward.
-It might feel a bit less natural in this mode but it still works.
+Note that Vim's behavior is still available so e.g. =~= (evil-invert-char) will work on the (char-after) and move forward.
 
 *** Touching delimiters
 
 If you have touching delimiters like "(...)(...)" and your cursor is between them, then =%= will jump back to the first "(".
-In this mode there is no way to toggle back and forth between the second set of delimiters when the two sets are touching.
+In this mode there is no evil-mode way to toggle back and forth between the second set of delimiters when the two sets are touching.
 
 *** Visual block
 
-Last the mode does nothing to =C-v= which is still working with a cursor on character model.
-In practice =C-v= is still usable and useful but it will have a few bugs tied to the end of line position.
+Last the mode does nothing to =C-v= which is still working with a cursor on top of character model.
+In practice =C-v= is still usable and useful but it does have a few bugs tied to the end of line position.
 
-Note that the evil team has done a great job on (evil-visual-block).
-Vanilla Emacs' (rectangle-mark-mode) =C-x <spc>= does not color the region the same way.
+Note that the evil team have done a great job on (evil-visual-block).
 Updating =C-v= to be consistent with this mode's cursor model is a challenge.
 
 ** Raison d'être speculation
 
 I think the main advantage of the mode is the line nugget mindset.
-If you don't use your editor every day I think this is easier to pick up and more similar to other editing experiences.
+If you don't use your editor every day I think the logic is easier to pick up and more similar to other editing experiences.
 That is the personal preference I have.
 
 The reason for the mode might also be as an introduction to Vim's modal system.
