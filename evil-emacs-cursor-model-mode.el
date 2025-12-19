@@ -6,7 +6,7 @@
 ;; Creative Commons Attribution-ShareAlike 4.0 International License
 ;; [[https://creativecommons.org/licenses/by-sa/4.0/]]
 
-;; A special thanks to Toby Cubitt who coded the cursor model.
+;; A special thanks to Toby Cubitt who coded the motions in the cursor model.
 ;; Peter Friis Jensen made it a mode and swapped some keybindings.
 
 ;; Author: Toby Cubitt
@@ -64,7 +64,7 @@ Maybe fewer layers are better for your Emacs pinky?"
      evil-move-beyond-eol t
      evil-highlight-closing-paren-at-point-states nil)
     ;; ----------------------------------------------------------------------------
-    ;; Rebinding relevamt `evil-org-mode' commands.
+    ;; Rebinding relevant `evil-org-mode' commands.
     (evil-define-minor-mode-key 'normal 'evil-org-mode
       "a"  #'evil-org-append-line
       "A"  nil
@@ -86,41 +86,56 @@ Maybe fewer layers are better for your Emacs pinky?"
       "O"  #'evil-org-open-above))))
 
 ;; ============================================================================
-;;; Remappings implementing the cursor model
+;;; Remappings that implement Emacs' cursor model
 ;; ============================================================================
 (defvar evil-emacs-cursor-model-mode-map (make-sparse-keymap)
   "Keymap for `evil-emacs-cursor-model-mode'.")
-(add-to-list 'minor-mode-map-alist
-             (cons 'evil-emacs-cursor-model-mode
-                   evil-emacs-cursor-model-mode-map) t)
 ;; ----------------------------------------------------------------------------
 ;; Motions.
 (keymap-set evil-emacs-cursor-model-mode-map
-            "<remap> <evil-find-char-to>" #'evil-find-char)
+            "<remap> <evil-find-char-to>"
+            #'evil-find-char)
 (keymap-set evil-emacs-cursor-model-mode-map
-            "<remap> <evil-find-char>" #'evil-emacs-cursor-model-find-char-after)
+            "<remap> <evil-find-char>"
+            #'evil-emacs-cursor-model-find-char-after)
 (keymap-set evil-emacs-cursor-model-mode-map
-            "<remap> <evil-forward-word-end>" #'evil-emacs-cursor-model-forward-after-word-end)
+            "<remap> <evil-forward-word-end>"
+            #'evil-emacs-cursor-model-forward-after-word-end)
 (keymap-set evil-emacs-cursor-model-mode-map
-            "<remap> <evil-forward-WORD-end>" #'evil-emacs-cursor-model-forward-after-WORD-end)
+            "<remap> <evil-forward-WORD-end>"
+            #'evil-emacs-cursor-model-forward-after-WORD-end)
 (keymap-set evil-emacs-cursor-model-mode-map
-            "<remap> <evil-backward-word-end>" #'evil-emacs-cursor-model-backward-after-word-end)
+            "<remap> <evil-backward-word-end>"
+            #'evil-emacs-cursor-model-backward-after-word-end)
 (keymap-set evil-emacs-cursor-model-mode-map
-            "<remap> <evil-backward-WORD-end>" #'evil-emacs-cursor-model-backward-after-WORD-end)
+            "<remap> <evil-backward-WORD-end>"
+            #'evil-emacs-cursor-model-backward-after-WORD-end)
 (keymap-set evil-emacs-cursor-model-mode-map
-            "<remap> <evil-jump-item>" #'evil-emacs-cursor-model-jump-after-item)
+            "<remap> <evil-jump-item>"
+            #'evil-emacs-cursor-model-jump-after-item)
 ;; ----------------------------------------------------------------------------
 ;; Commands.
 (keymap-set evil-emacs-cursor-model-mode-map
-            "<remap> <evil-append>" #'evil-append-line)
+            "<remap> <evil-append>"
+            #'evil-append-line)
 (keymap-set evil-emacs-cursor-model-mode-map
-            "<remap> <evil-open-above>" #'evil-open-below)
+            "<remap> <evil-append-line>"
+            #'evil-append)
 (keymap-set evil-emacs-cursor-model-mode-map
-            "<remap> <evil-open-below>" #'evil-open-above)
+            "<remap> <evil-open-above>"
+            #'evil-open-below)
 (keymap-set evil-emacs-cursor-model-mode-map
-            "<remap> <evil-paste-before>" #'evil-paste-after)
+            "<remap> <evil-open-below>"
+            #'evil-open-above)
 (keymap-set evil-emacs-cursor-model-mode-map
-            "<remap> <evil-paste-after>" #'evil-paste-before)
+            "<remap> <evil-paste-before>"
+            #'evil-paste-after)
+(keymap-set evil-emacs-cursor-model-mode-map
+            "<remap> <evil-paste-after>"
+            #'evil-paste-before)
+(add-to-list 'minor-mode-map-alist
+             (cons 'evil-emacs-cursor-model-mode
+                   evil-emacs-cursor-model-mode-map) t)
 
 ;; ============================================================================
 ;;; Evil commands implementing Emacs' cursor model
