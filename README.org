@@ -33,7 +33,7 @@ The evil-emacs-cursor-model-mode unify these to a cursor between model in all st
 
 Furthermore it becomes natural to change some keybindings in this framework.
 That is my sacrilege to "the church of Vim".
-Evil-mode's modal interface is preserved.
+Evil-mode's /modal/ interface is preserved.
 
 ** Keybindings
 
@@ -43,27 +43,27 @@ To do this the mode will change three keybindings in evil-mode's normal-state ke
 
 *** The =a= binding
 
-First and foremost Vim's =a= in normal-state makes little sense.
+First and foremost Vim's =a= in normal-state makes little sense in this mode.
 Evil-mode's (evil-append) is just =l= (evil-forward-char) and =i= (evil-insert).
 That is how you should think if you adopt the mode's cursor model.
 
-Therefore I bind =a= to (evil-append-line).
+Therefore I bind (evil-append-line) to =a=.
 
-Entering insert state at the end of line (evil-append-line) makes sense in this mode, whereas (evil-append) does not.
-You are free to rebind =A= in evil-emacs-cursor-model-mode-map.
+Entering insert state at the end of line (evil-append-line) makes sense, whereas (evil-append) does not.
+The mode has the keymap evil-emacs-cursor-model-mode-map where you can rebind =A= if you wish.
 
 *** The =p= and =o= bindings
 
 With the change to =a= it is natural to have a look at =p= too.
-When you are not pasting a full line Vim's =p= makes little sense in this mode.
-Move forward and paste is strange to prioritize with a one letter lower case binding.
+When you are not pasting a full line, Vim's =p= makes little sense in this mode.
+Move forward and paste is strange to prioritize with a lower case binding.
 
 Therefore I swap evil-mode's =p= and =P=.
 
-When you use the mode, you might find yourself only using the (evil-paste-before) command.
+When you use the mode, you might find yourself only using the (evil-paste-before) command to paste.
 Vim's need for two paste commands is compensation for the normal-state cursor model.
 Other editors only have one paste command and it's also natural to mainly have one in this mode.
-The new =P= (evil-paste-after) is still bound and can be useful, but you can contextually replace it with =jp= or =lp=.
+(evil-paste-after) is still bound to =P= and can be useful, but you can contextually replace it with =jp= or =lp=.
 
 Last I swap Vim's =o= and =O= so their case are consistent with =p= and =P= when you paste lines.
 
@@ -80,60 +80,58 @@ These are all normal-state keybindings:
 | =p=                 | =P=           |                   | (evil-paste-before) |
 | =P=                 | =p=           | =jp= or =lp=      | (evil-paste-after)  |
 
-Besides that the mode manipulate motions so the cursor between characters model will work.
+Besides these commands the mode manipulate motions so the cursor between characters model will work.
 E.g. =E= should bring you to the end of a word rather than between the last two characters of a word.
 These manipulations all work seamlessly and should feel natural.
 
 ** The idea of a line nugget
 
 One idea of the mode is to reduce the use of layers and bindings.
-When all the commands operating on other lines are layered, you might start to adopt a new philosophy.
+When the commands are changed as described above, you might start to adopt a new philosophy.
 The idea is to work with motions among line nuggets.
 
-Vim already does this somewhat, since most commands are limited to operating on the current line.
-I like all my keybindings dealing with the current line to be lower case.
-Remaining upper case bindings can be replaced by using a motion (e.g. =I= is =0i=).
+With this mode the /commands/ are focused on the current line and you can replace all layers with motions.
+If you want to open the next line you can use =jo= or =a<RET>= which are both two keystrokes, but so are =<shift>o=.
+Same works for paste where =jp= can replace the mode's =P=, when you paste a line.
 
-With this mode you can embrace the line nugget idea and replace layers with motions.
-If you want to open the next line you can use =jo= or =a<RET>= which are both two key presses, but so are the new =<shift>o=.
-Same works for paste where =jp= can replace the new =P=, when you paste a line.
+Note that the /motions/ =f=, =t=, =w=, =b=, =e=, and =ge= still have their upper case variants.
 
-The mindset is that you are working on the current line.
-This work is more efficient when the keybindings are lower case.
+The mindset is that you focus and work on the current line.
 I feel this logic is easier to comprehend and internalize if you are not a power user.
 
 *** Efficiency
 
 Compared to Vim the efficiency is roughly the same with this mode.
-If you need to work with the next line you will need weakly more keys.
+If you need to work with the next line you will need weakly more keystrokes.
 When dealing with the current line nugget you might need fewer.
 
 In most situations you will probably solve whatever you want to do, with roughly the same number of keys.
-Over time you will develop muscle memory, which make you end up in the right place for using fewer key strokes.
+Over time you will develop muscle memory, which make you end up in the right place for using fewer keystrokes.
 
 Using a layer increase complexity because it does not only require that you use two keys.
 It also adds a restriction on holding down a key while pressing other keys.
 The following is not fair, but I find it harder to write "hEll" than "hello".
 
-Ultimately the modal framework is about editing text (working with the current line nugget) rather than adding new text (working with additional lines).
+Ultimately the modal framework is about editing text (working with the current line) rather than adding new text (working with additional lines).
 
 ** Drawbacks
 
-The main drawback is that it will be harder to work efficiently with an unconfigured Vi, Vim or evil-mode editor.
+The main drawback is that it will be harder to work efficiently with a vanilla Vi, Vim or evil-mode editor.
 The former mentioned muscle memory will work against you.
 
 *** Combined command and motion
 
-The mode does have things that become less natural or harder.
-In Vim you can artificially mimic =l= with =a<esc>=.
-This type of behavior where you have an implicit motion might feel unnatural in this mode.
+Vim have commands that combine a functionality with a motion.
+This type of implicit motion might feel less natural in this mode.
 That is a real cost, since a combined command and motion can sometimes be utilized with a prefix.
 
 *** Swap characters
 
-A more useful application of the command/motion behavior is Vim's =xp= which /swap/ two characters and move the cursor forward.
+A useful application of the command/motion behavior is Vim's =xp= which /swap/ two characters and move the cursor forward.
+This is less accessible in this mode (=xP=) because the paste commands have been swapped.
+
 The lisp function (transpose-chars) does roughly the same thing without involving the kill ring.
-I bind it to =gs= in my init.el, but this is /not/ a part of the mode.
+I bind it to =gs= in my init, but this is /not/ a part of the mode.
 #+begin_src emacs-lisp
   (bind-keys
    :map evil-normal-state-map
@@ -141,7 +139,7 @@ I bind it to =gs= in my init.el, but this is /not/ a part of the mode.
 #+end_src
 Vim's default =gs= is (sit-for 1) but evil-mode doesn't implement it.
 
-Note that Vim's behavior is still available so e.g. =~= (evil-invert-char) will work on the (char-after) and move forward.
+Note that evil-mode's behavior is still available so e.g. =~= (evil-invert-char) will work on the (char-after) and move forward.
 
 *** Touching delimiters
 
@@ -151,7 +149,7 @@ In this mode there is no evil-mode way to toggle back and forth between the seco
 *** Visual block
 
 Last the mode does nothing to =C-v= which is still working with a cursor on top of character model.
-In practice =C-v= is still usable and useful but it does have a few bugs tied to the end of line position.
+In practice =C-v= is still usable and useful but it does have a few bugs mainly tied to the end of line position.
 
 Note that the evil team have done a great job on (evil-visual-block).
 Updating =C-v= to be consistent with this mode's cursor model is a challenge.
@@ -160,10 +158,10 @@ Updating =C-v= to be consistent with this mode's cursor model is a challenge.
 
 I think the main advantage of the mode is the line nugget mindset.
 If you don't use your editor every day I think the logic is easier to pick up and more similar to other editing experiences.
-That is the personal preference I have.
+This is my personal opinionated preference.
 
 The reason for the mode might also be as an introduction to Vim's modal system.
-It is hard to start out with Vim in it's unfamiliar cursor model.
+It is hard to start out with Vim and it's unfamiliar cursor model.
 Maybe this mode will make it an easier and better experience to pick up the modal framework.
 
 The mode might be helpful if you suffer from a hand injury.
