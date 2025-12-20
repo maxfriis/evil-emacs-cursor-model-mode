@@ -32,8 +32,7 @@ A cursor /on top of/ characters model in normal-state and /between/ characters i
 The evil-emacs-cursor-model-mode unify these to a cursor between model in all states.
 
 Furthermore it becomes natural to change some keybindings in this framework.
-That is my sacrilege to "the church of Vim".
-Evil-mode's /modal/ interface is preserved.
+I preserve Evil-mode's /modal/ interface.
 
 ** Keybindings
 
@@ -65,7 +64,7 @@ Vim's need for two paste commands is compensation for the normal-state cursor mo
 Other editors only have one paste command and it's also natural to mainly have one in this mode.
 (evil-paste-after) is still bound to =P= and can be useful, but you can contextually replace it with =jp= or =lp=.
 
-Last I swap Vim's =o= and =O= so their case are consistent with =p= and =P= when you paste lines.
+Last I swap evil-mode's =o= and =O= so they are consistent with =p= and =P= when you paste lines.
 
 *** Summary
 
@@ -87,10 +86,10 @@ These manipulations all work seamlessly and should feel natural.
 ** The idea of a line nugget
 
 One idea of the mode is to reduce the use of layers and bindings.
-When the commands are changed as described above, you might start to adopt a new philosophy.
+When the commands change as described above, you might start to adopt a new philosophy.
 The idea is to work with motions among line nuggets.
 
-With this mode the /commands/ are focused on the current line and you can replace all layers with motions.
+With this mode the /commands/ focus on the current line and you can replace all layers with motions.
 If you want to open the next line you can use =jo= or =a<RET>= which are both two keystrokes, but so are =<shift>o=.
 Same works for paste where =jp= can replace the mode's =P=, when you paste a line.
 
@@ -122,13 +121,8 @@ The former mentioned muscle memory will work against you.
 *** Combined command and motion
 
 Vim have commands that combine a functionality with a motion.
-This type of implicit motion might feel less natural in this mode.
-That is a real cost, since a combined command and motion can sometimes be utilized with a prefix.
-
-*** Swap characters
-
 A useful application of the command/motion behavior is Vim's =xp= which /swap/ two characters and move the cursor forward.
-This is less accessible in this mode (=xP=) because the paste commands have been swapped.
+This is less accessible in this mode because I swap the paste commands (=xP=).
 
 The lisp function (transpose-chars) does roughly the same thing without involving the kill ring.
 I bind it to =gs= in my init, but this is /not/ a part of the mode.
@@ -149,7 +143,7 @@ In this mode there is no evil-mode way to toggle back and forth between the seco
 *** Visual block
 
 Last the mode does nothing to =C-v= which is still working with a cursor on top of character model.
-In practice =C-v= is still usable and useful but it does have a few bugs mainly tied to the end of line position.
+In practice =C-v= is still usable and useful but it does have bugs tied to motions and the end of line position.
 
 Note that the evil team have done a great job on (evil-visual-block).
 Updating =C-v= to be consistent with this mode's cursor model is a challenge.
