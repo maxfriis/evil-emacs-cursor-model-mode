@@ -32,7 +32,7 @@ A cursor /on top of/ characters model in normal-state and /between/ characters i
 The evil-emacs-cursor-model-mode unify these to a cursor between model in all states.
 
 Furthermore it becomes natural to change some keybindings in this framework.
-I preserve Evil-mode's /modal/ interface.
+I preserve evil-mode's /modal/ interface!
 
 ** Keybindings
 
@@ -61,7 +61,7 @@ Therefore I swap evil-mode's =p= and =P=.
 
 When you use the mode, you might find yourself only using the (evil-paste-before) command to paste.
 Vim's need for two paste commands is compensation for the normal-state cursor model.
-Other editors only have one paste command and it's also natural to mainly have one in this mode.
+Other editors only have one paste command and this mode also mainly have one.
 (evil-paste-after) is still bound to =P= and can be useful, but you can contextually replace it with =jp= or =lp=.
 
 Last I swap evil-mode's =o= and =O= so they are consistent with =p= and =P= when you paste lines.
@@ -83,7 +83,7 @@ Besides these commands the mode manipulate motions so the cursor between charact
 E.g. =E= should bring you to the end of a word rather than between the last two characters of a word.
 These manipulations all work seamlessly and should feel natural.
 
-** The idea of a line nugget
+** The line nugget idea
 
 One idea of the mode is to reduce the use of layers and bindings.
 When the commands change as described above, you might start to adopt a new philosophy.
@@ -103,24 +103,26 @@ I feel this logic is easier to comprehend and internalize if you are not a power
 Compared to Vim the efficiency is roughly the same with this mode.
 If you need to work with the next line you will need weakly more keystrokes.
 When dealing with the current line nugget you might need fewer.
-
-In most situations you will probably solve whatever you want to do, with roughly the same number of keys.
-Over time you will develop muscle memory, which make you end up in the right place for using fewer keystrokes.
+In most situations you will probably solve whatever you want to do, with roughly the same number of keystrokes.
 
 Using a layer increase complexity because it does not only require that you use two keys.
 It also adds a restriction on holding down a key while pressing other keys.
 The following is not fair, but I find it harder to write "hEll" than "hello".
 
-Ultimately the modal framework is about editing text (working with the current line) rather than adding new text (working with additional lines).
+Ultimately the modal framework focus on editing text (working with the current line) rather than adding new text (working with additional lines).
 
 ** Drawbacks
 
 The main drawback is that it will be harder to work efficiently with a vanilla Vi, Vim or evil-mode editor.
 The former mentioned muscle memory will work against you.
 
+The mode will also mess with Vim's "verb" → "noun" mindset.
+Motions are nouns and usually the idea is to minimize their use.
+Replacing layers with motions is in conflict with this idea.
+
 *** Combined command and motion
 
-Vim have commands that combine a functionality with a motion.
+Vim has commands that combine a functionality with a motion.
 A useful application of the command/motion behavior is Vim's =xp= which /swap/ two characters and move the cursor forward.
 This is less accessible in this mode because I swap the paste commands (=xP=).
 
@@ -148,19 +150,15 @@ In practice =C-v= is still usable and useful but it does have bugs tied to motio
 Note that the evil team have done a great job on (evil-visual-block).
 Updating =C-v= to be consistent with this mode's cursor model is a challenge.
 
-** Raison d'être speculation
+* Raison d'être speculation
 
-I think the main advantage of the mode is the line nugget mindset.
-If you don't use your editor every day I think the logic is easier to pick up and more similar to other editing experiences.
-This is my personal opinionated preference.
+The /line nugget/ mindset will use less commands and the logic is easier to learn and internalize.
 
-The reason for the mode might also be as an introduction to Vim's modal system.
-It is hard to start out with Vim and it's unfamiliar cursor model.
-Maybe this mode will make it an easier and better experience to pick up the modal framework.
+Alternatively the reason for the mode might be to introduce evil-mode or Vim.
+The mode can make it a better experience to pick up the /modal framework/.
 
-The mode might be helpful if you suffer from a hand injury.
-Emacs pinky is a real thing and layers can be a problem.
-Even a small relief in the amount of layers might be important.
+Last Emacs pinky is a real thing and /fewer layers/ might be important.
+This will also be helpful to people who use "sticky keys" accessibility.
 
-Last the mode might be helpful to people who use accessibility help.
-The mode will reduce the need for "sticky keys".
+To me all these three opinionated reasons are important.
+I prefer line nuggets in a modal framework with few layers.
