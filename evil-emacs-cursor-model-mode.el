@@ -18,14 +18,17 @@
 ;; Package-Requires: ((emacs "29.1") (evil "1.15.0"))
 
 ;; ============================================================================
-;;; TODO:
-;; ============================================================================
-
-;; ============================================================================
 ;;; Commentary:
 ;; ============================================================================
 ;; Emacs' cursor between characters model for cursor positioning in
-;; `evil-mode' instead of Vim's normal-state cursor on characters model.
+;; `evil-mode' instead of Vim's normal-state cursor on top of characters model.
+;; ============================================================================
+;;; TODO:
+;; ============================================================================
+;; Does erlier release versions of evil work?
+;; 1.15.0 is the current but fairly old release version of evil.
+;;
+;; Work on `evil-visual-block' which still use `evil-mode's cursor model.
 
 ;; ============================================================================
 ;;; Code:
