@@ -48,7 +48,7 @@ That is how you should think if you adopt the mode's cursor model.
 
 Therefore I bind (evil-append-line) to =a=.
 
-Entering insert state at the end of line (evil-append-line) makes sense, whereas (evil-append) does not.
+Entering insert-state at the end of line (evil-append-line) makes sense, whereas (evil-append) does not.
 The mode has the keymap evil-emacs-cursor-model-mode-map where you can rebind =A= if you wish.
 
 *** The =p= and =o= bindings
@@ -118,7 +118,7 @@ The former mentioned muscle memory will work against you.
 
 The mode will also mess with Vim's "verb" → "noun" mindset.
 Motions are nouns and usually the idea is to minimize their use.
-Replacing layers with motions is in conflict with this idea.
+Replacing layers with motions are in conflict with this idea.
 
 *** Combined command and motion
 
@@ -147,18 +147,18 @@ In this mode there is no evil-mode way to toggle back and forth between the seco
 Last the mode does nothing to =C-v= which is still working with a cursor on top of character model.
 In practice =C-v= is still usable and useful but it does have bugs tied to motions and the end of line position.
 
-Note that the evil team have done a great job on (evil-visual-block).
-Updating =C-v= to be consistent with this mode's cursor model is a challenge.
+Emacs' =C-x <SPC>= (rectangle-mark-mode) works in insert-state but not in normal-state.
+If =C-v= fails I suggest you fall back on marking with =v= and use the =C-x r= bindings.
 
 * Raison d'être speculation
 
 The /line nugget/ mindset will use less commands and the logic is easier to learn and internalize.
 
-Alternatively the reason for the mode might be to introduce evil-mode or Vim.
+Alternatively the reason for the mode might be to introduce Vim or evil-mode.
 The mode can make it a better experience to pick up the /modal framework/.
 
 Last Emacs pinky is a real thing and /fewer layers/ might be important.
 This will also be helpful to people who use "sticky keys" accessibility.
 
-To me all these three opinionated reasons are important.
-I prefer line nuggets in a modal framework with few layers.
+To me all three reasons are important.
+I like line nuggets in a modal framework with few layers.
