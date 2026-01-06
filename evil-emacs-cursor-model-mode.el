@@ -149,12 +149,13 @@ Movement is restricted to the current line unless `evil-cross-lines' is non-nil.
   :type inclusive
   (interactive "<c><C>")
   (unless count (setq count 1))
-  (if (< count 0)
-      (evil-find-char-backward-to (- count) char)
-    ;; else
+  (cond
+   ((> count 0)
     (when (= (char-after) char)
       (cl-decf count))
     (evil-find-char count char))
+   ((< count 0)
+    (evil-find-char-to-backward (- count) char)))
   (setq evil-last-find (list #'evil-emacs-cursor-model-find-before-char char (> count 0))))
 
 (evil-define-motion evil-emacs-cursor-model-find-after-char (count char)
@@ -163,13 +164,14 @@ Movement is restricted to the current line unless `evil-cross-lines' is non-nil.
   :type inclusive
   (interactive "<c><C>")
   (unless count (setq count 1))
-  (if (< count 0)
-      (evil-find-char-backward (- count) char)
-    ;; else
+  (cond
+   ((> count 0)
     (when (= (char-after) char)
       (cl-decf count))
     (evil-find-char count char)
     (forward-char))
+   ((< count 0)
+    (evil-find-char-backward (- count) char)))
   (setq evil-last-find (list #'evil-emacs-cursor-model-find-after-char char (> count 0))))
 
 (defun evil-emacs-cursor-model-forward-after-end (thing &optional count)
